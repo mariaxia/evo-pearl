@@ -1,7 +1,7 @@
 {
   "name": "paper-bones",
   "version": "1.0.0",
-  "description": "",
+  "description": "a very basic paper.js setup",
   "main": "bells.js",
   "scripts": {
     "start": "node server/app.js",
