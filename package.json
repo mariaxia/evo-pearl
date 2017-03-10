@@ -1,15 +1,15 @@
 {
-  "name": "ripplebells",
+  "name": "paper-bones",
   "version": "1.0.0",
-  "description": "",
-  "main": "Sketch_170310_171307.js",
+  "description": "a very basic paper.js setup",
+  "main": "bells.js",
   "scripts": {
-    "start": "nodemon server/app.js",
+    "start": "node server/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": ['paper'],
+  "author": "Maria Xia (github.com/mariaxia)",
+  "license": "MIT",
   "dependencies": {
     "nodemon": "^1.11.0",
     "paper": "^0.10.3"
