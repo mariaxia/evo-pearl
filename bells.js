@@ -23,6 +23,7 @@ function Globe (){
 
 Globe.prototype.draw = function (){
     this.path = new Path.Circle(new Point(this.center.x, this.center.y), this.radius);
+    this.path.fillColor = "AliceBlue"
     this.path.strokeColor = "black";
 }
 
@@ -36,6 +37,8 @@ Globe.prototype.react = function (){
 
 for (var i = 0; i < 10; i++){
     globes.push(new Globe())
-    globes[i].draw();
+    globes[i].draw()
+    globes[i].path.onMouseDown = function(e){
+        console.log('hi')
+    }
 }
-
