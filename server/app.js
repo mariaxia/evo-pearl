@@ -1,12 +1,24 @@
-var http = require('http');
+var express = require('express');
 var fs = require('fs');
-var path = require('path')
-var index = fs.readFileSync(path.join(__dirname, '../bells.js'));
+var path = require('path');
+var morgan = require('morgan');
 
-http.createServer(function (req, res) {
-    res.setHeader("Access-Control-Allow-Origin", null);
-    // res.writeHead(200, {'Content-Type': 'text/javascript'});
-    res.end(index);
-}).listen(8080, function(){
+var app = express()
+
+app
+    .use(morgan('tiny'))
+    .use((req, res, next) => {
+        res.header("Access-Control-Allow-Origin", null);
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        next();
+    })
+    .use(express.static(path.join(__dirname, '..', 'public')))
+
+app.get('/', (req, res, next) => {
+    console.log('hi')
+    res.sendFile(path.join(__dirname, '..', 'index.html'))
+})
+
+var server = app.listen(8080, function(){
     console.log('tiny server listening on port 8080.')
 });

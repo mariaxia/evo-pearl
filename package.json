@@ -1,16 +1,20 @@
 {
-  "name": "paper-bones",
+  "name": "Evo-pearl",
   "version": "1.0.0",
-  "description": "a very basic paper.js setup",
-  "main": "bells.js",
+  "description": "Polygon drawing using a genetic algorithm",
+  "main": "public/mona.js",
   "scripts": {
-    "start": "node server/app.js",
+    "start": "nodemon server/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["paper"],
+  "keywords": [
+    "paper"
+  ],
   "author": "Maria Xia (http://github.com/mariaxia)",
   "license": "MIT",
   "dependencies": {
+    "express": "^4.15.2",
+    "morgan": "^1.8.1",
     "nodemon": "^1.11.0",
     "paper": "^0.10.3"
   }
