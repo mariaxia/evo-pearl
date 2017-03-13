@@ -302,7 +302,6 @@ var runningBox = document.getElementById('running');
 var go = function (event) {
     if (event.count % 100 === 0) {
         generationBox.innerHTML = event.count;
-        console.log(event.count);
     }
     evoPearl.evolve();
 }
