@@ -5,13 +5,45 @@
 <script type="text/javascript" src="paper-full.js"></script>
 <!-- Define inlined JavaScript -->
 <title>Pearl</title>
+
+<style>
+	body {
+		background-color: #222222;
+		color: #cccccc;
+		font-family: monospace;
+	}
+	.center {
+		display: block;
+	}
+	.outer {
+		text-align: center;
+	}
+	#heading {
+		padding-top: 50px;
+	}
+</style>
+
 </head>
 <body>
-	<div id="source">
-		<img id="mona" src="pearl.jpg">
+	<div class="outer">
+		<div id="heading">
+			<h1>EVO-PEARL</h1>
+		</div>
+		<div class="center">
+			<img id="pearl" src="pearl.jpg">
+		</div>
+		<div class="center">
+			<canvas id="myCanvas" 
+				width="128" 
+				height="128" 
+				style="border:1px solid #555555">
+			</canvas>
+		</div>
+		<div class="center" id="statistics">
+			<p><span id="running"></span></p>
+			<p>Generation: <span id="generation"></span></p>
+		</div>
 	</div>
-	
-	<canvas id="myCanvas" width="128" height="128" style="border:1px solid black"></canvas>
 </body>
-<script type="text/paperscript" src="mona.js" canvas="myCanvas">
+<script type="text/paperscript" src="pearl.hill.js" canvas="myCanvas"></script>
 </html>

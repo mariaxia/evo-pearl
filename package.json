@@ -2,7 +2,7 @@
   "name": "Evo-pearl",
   "version": "1.0.0",
   "description": "Polygon drawing using a genetic algorithm",
-  "main": "public/mona.js",
+  "main": "public/pearl.js",
   "scripts": {
     "start": "nodemon server/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
