@@ -1,7 +1,7 @@
 {
   "name": "Evo-pearl",
   "version": "1.0.0",
-  "description": "Polygon drawing using a genetic algorithm",
+  "description": "Polygon drawing using a brutish genetic algorithm",
   "main": "public/pearl.js",
   "scripts": {
     "start": "nodemon server/app.js",

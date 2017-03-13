@@ -4,43 +4,48 @@
 /*********************** EVOLUTION *****************************/
 
 function Evolution (raster){
+    this.target = getImageData(raster);
+    this.population = [];
+    this.head = null;
 
-    var parentLayer = new Layer();
-    parentLayer.visible = false;
-
-    var childLayer = new Layer();
-    childLayer.visible = false;
-
-    // start with dark background and 10 triangles
     var black = new Path.Rectangle(0, 0, 128, 128);
-    black.fillColor = '#111111';
-    parentLayer.addChild(black);
-    childLayer.addChild(black);
-    for (var i = 0; i < 5; i++){
-        parentLayer.addChild(generateShape(3));
-        childLayer.addChild(generateShape(3));
+    for (var i = 0; i < 6; i++){
+        var individual = new Layer();
+        individual.visible = false;
+        individual.addChild(black.clone());
+        for (var j = 0; j < 4; j++){
+            var shape = generateShape(3);
+            console.log('shape', shape.fillColor)
+            individual.addChild(generateShape(3))
+        }
+        this.population.push(new Chromosome(individual), this.target);
     }
-
-    this.target = getImageData(raster)
-    this.parent = new Chromosome( parentLayer, this.target );
-    this.child = new Chromosome( childLayer, this.target );
+    black.remove();
 }
 
 // "hill climbing algorithm" - is this different from brute force?
 Evolution.prototype.evolve = function(){
 
-    var pCost = this.parent.cost || this.parent.getFitness();
-    var cCost = this.child.cost || this.child.getFitness();
+    this.population = this.population
+                    .sort(function(a, b){
+                        var costA = a.cost || a.getFitness();
+                        var costB = b.cost || b.getFitness();
+                        return costA - costB;
+                    })
 
-    if (cCost < pCost){
-        this.parent.remove();
-        this.parent = this.child;
-        this.parent.show();
-    } else {
-        this.child.remove();
+    for (var i = 0; i < 3; i++){ // remove 3, then create 3
+        this.population.pop().remove();
     }
 
-    this.child = this.parent.mutate();
+    for (var i = 0; i < 3; i++){
+        this.population.push(
+            this.population[i].mate(this.population[between(0, 3)])
+        )
+    }
+
+    this.head.layer.visible = false;
+    this.head = this.population[0];
+    this.head.show();
 }
 
 
@@ -106,7 +111,7 @@ var polygonMutations = {
     transform: function(index){
         var rand = Math.random();
         if (rand < 0.3)
-            return this.polygons[index].position += new Point(between(0, 50), between(0, 50))
+            return this.polygons[index].position += new Point(between(0, 20), between(0, 20))
         if (rand > 0.7)
             return this.polygons.scale = Math.random() + 0.5;
 
@@ -150,28 +155,33 @@ Chromosome.prototype = Object.assign(
     validations
 );
 
+Chromosome.prototype.mate = function(partner){
+    var newLayer = new Layer();
+    newLayer.visible = false;
+
+    for (var i = 0; i < 25; i++){
+        newLayer.addChild(this.polygons[i].clone())
+    }
+    for (var i = 25; i < 50; i++){
+        newLayer.addChild(partner.polygons[i].clone())
+    }
+    var baby = new Chromosome(newLayer, this.targetData);
+    return baby.mutate();
+};
+
 Chromosome.prototype.mutate = function () {
-    var mutatedLayer = new Layer();
-    mutatedLayer.visible = false;
-
-    this.polygons.forEach(function(polygon){
-        mutatedLayer.addChild(polygon.clone());
-    })
-
-    var mutatedChromosome = new Chromosome(mutatedLayer, this.targetData);
-
     var mutated = false;
     while (!mutated) {
-        mutatedChromosome.chromosomeMutations.forEach(function(mutation) {
+        this.chromosomeMutations.forEach(function(mutation) {
             if (mutation.isValid.apply(this)) {
                 if (Math.random() < mutation.probability) {
                     mutated = true;
                     mutation.mutate.apply(this);
                 }
             }
-        }, mutatedChromosome)
+        }, this)
 
-        mutatedChromosome.polygons.forEach(function(polygon, index) {
+        this.polygons.forEach(function(polygon, index) {
             this.polygonMutations.forEach(function(mutation) {
                 if (mutation.isValid.apply(this, [index])) {
                     if (Math.random() < mutation.probability) {
@@ -180,10 +190,9 @@ Chromosome.prototype.mutate = function () {
                     }
                 }
             }, this);
-        }, mutatedChromosome)
+        }, this)
     }
-
-    return mutatedChromosome;
+    return this;
 };
 
 Chromosome.prototype.getFitness = function(){
@@ -203,6 +212,9 @@ Chromosome.prototype.remove = function(){
 /*********************** MUTATION ******************************/
 
 function Mutation (type, probability, mutate, isValid) {
+    /*
+        Create a common interface for the mutations
+    */
     this.type = type;
     this.probability = probability;
     this.mutate = mutate;
@@ -219,6 +231,7 @@ function getImageData(input){
     } else { // it's a layer
         var originalVisiblity = input.visible;
         input.visible = true;
+        console.log(input.children);
         var fullRaster = input.rasterize();
         raster = fullRaster.getSubRaster(0, 0, 128, 128);
         fullRaster.remove();
@@ -230,25 +243,30 @@ function getImageData(input){
 
 /**
  * Cost function
- * You probably want to delegate this operation to a web worker...
+ * You probably want to delegate this operation to a web worker
  */
 function costFn (rasterData, targetData){
     return Math.sqrt(
         rasterData
-            .reduce(function(acc, rgbVal, i){
-                return acc + (rgbVal - targetData[i]) * (rgbVal - targetData[i]);
+            .reduce(function(acc, rgbValue, i){
+                return acc + (rgbValue - targetData[i]) * (rgbValue - targetData[i]);
             }, 0)
     )
 }
 
-// Returns a random integer between start up to (and not including) end
+// getchu a random integer between start up to and not including end
 function between(start, end){
     return start + parseInt((Math.random() * (end - start)));
 }
 
 function generateShape (sides){
     var polygon = new Path();
-    polygon.fillColor = 'yellow';
+    polygon.fillColor = new Color(
+            Math.random(),
+            Math.random(),
+            Math.random(),
+            Math.random()
+        );
     polygon.opacity = 0.2;
     polygon.fillColor.hue += between(0, 360);
 

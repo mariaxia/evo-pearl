@@ -24,7 +24,6 @@ function Evolution_p6 (raster){
 }
 
 Evolution_p6.prototype.evolve = function(){ // evolve one generation
-    var last = this.population[5];
     this.population = this.population
                         .sort(function(a, b){
                             return a.cost - b.cost
@@ -108,7 +107,7 @@ function mutate (dna) {
                                     var rand = Math.random();
                                     var incrementer;
                                     if (i < 3){
-                                        incrementer = rand > 0.5 ? between(0, 100) : -1 * between(0, 100)
+                                        incrementer = rand > 0.5 ? between(0, 255) : -1 * between(0, 255)
                                     } else {
                                         incrementer = rand > 0.5 ? between(0, 30) : -1 * between(0, 30)
                                     }
@@ -158,7 +157,7 @@ function costFn (rasterData, targetData){
 }
 
 function between(start, end){
-    return start + Math.round((Math.random() * (end - start)));
+    return start + parseInt((Math.random() * (end - start)));
 }
 
 function generateSampleGenome (){
