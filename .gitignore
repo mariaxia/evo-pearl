@@ -1,5 +1,3 @@
 node_modules
 yarn.lock
-public/bells.js
-public/evo.js
-public/paper-full.js
+misc
