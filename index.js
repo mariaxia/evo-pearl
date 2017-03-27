@@ -1,9 +1,9 @@
-var express = require('express');
-var fs = require('fs');
-var path = require('path');
-var morgan = require('morgan');
+const express = require('express');
+const fs = require('fs');
+const path = require('path');
+const morgan = require('morgan');
 
-var app = express()
+const app = express()
 
 app
     .use(morgan('tiny'))
@@ -13,6 +13,6 @@ app.get('/', (req, res, next) => {
     res.sendFile(path.join(__dirname, 'index.html'))
 })
 
-var server = app.listen(8080, function(){
-    console.log('tiny server listening on port 8080.')
+const server = app.listen(process.env.PORT || 8080, function(){
+    console.log('evo-pearl listening on port 8080.')
 });
