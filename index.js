@@ -13,6 +13,7 @@ app.get('/', (req, res, next) => {
     res.sendFile(path.join(__dirname, 'index.html'))
 })
 
-const server = app.listen(process.env.PORT || 8080, function(){
+const PORT = process.env.PORT || 8080;
+const server = app.listen(PORT, function(){
     console.log('evo-pearl listening on port 8080.')
 });
