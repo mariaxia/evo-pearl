@@ -4,7 +4,7 @@
   "description": "Polygon drawing using a brutish genetic algorithm",
   "main": "public/pearl.js",
   "scripts": {
-    "start": "nodemon server/app.js",
+    "start": "node server/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -15,7 +15,6 @@
   "dependencies": {
     "express": "^4.15.2",
     "morgan": "^1.8.1",
-    "nodemon": "^1.11.0",
     "paper": "^0.10.3"
   }
 }
