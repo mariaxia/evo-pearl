@@ -8,6 +8,8 @@ Each new generation modifies polygons and runs a pixel-by-pixel comparison betwe
 
 ### Sample Evolution:
 
+![alt text](https://github.com/mariaxia/evo-pearl/blob/master/images/Screenshot%20from%202017-03-24%2022-20-09.png)
+
 <img width=300 src="https://github.com/mariaxia/evo-pearl/blob/master/images/Screenshot%20from%202017-03-24%2022-20-09.png" />
 
 <img width=300 src="https://github.com/mariaxia/evo-pearl/blob/master/images/Screenshot%20from%202017-03-24%2022-23-43.png" />
